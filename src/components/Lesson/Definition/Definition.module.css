@@ -1,0 +1,23 @@
+.translation {
+  width: 100%;
+  height: 10vh;
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  border-radius: 2rem;
+}
+
+.btn {
+  padding: .3rem;
+  border: .1rem solid black;
+  border-radius: 1rem;
+  cursor: pointer;
+  font-weight: bolder;
+  font-size: large;
+  padding: 1rem;
+}
+
+.btn:hover {
+  background-color: rgb(226, 225, 225);
+  transition-duration: 150ms;
+}

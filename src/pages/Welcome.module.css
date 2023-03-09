@@ -1,0 +1,88 @@
+.welcome {
+  background-color: rgb(216, 250, 230);
+  min-height: calc(100vh - 4.2rem);
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  padding-top: 2rem;
+}
+
+.text-box {
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  color: rgb(0, 0, 0);
+  position: absolute;
+}
+
+.slogan1 {
+  text-transform: uppercase;
+  letter-spacing: 0.3rem;
+  font-size: 3rem;
+  animation-name: moveInLeft;
+  animation-duration: 1s;
+  animation-timing-function: ease-out;
+  margin-bottom: 2rem;
+}
+
+.slogan2 {
+  text-transform: uppercase;
+  font-size: 2.25rem;
+  animation-name: moveInRight;
+  animation-duration: 2s;
+  animation-timing-function: ease-in;
+}
+
+
+@media (min-width: 768px) {
+  .slogan1 {
+    text-transform: uppercase;
+    letter-spacing: 0.3rem;
+    font-size: 4rem;
+    animation-name: moveInLeft;
+    animation-duration: .5s;
+    animation-timing-function: ease-out;
+    margin-bottom: 2rem;
+  }
+
+  .slogan2 {
+    text-transform: uppercase;
+    font-size: 3rem;
+    animation-name: moveInRight;
+    animation-duration: 1s;
+    animation-timing-function: ease-in;
+  }
+}
+
+
+@keyframes moveInLeft {
+  0% {
+    opacity: 0;
+    transform: translateX(-100px);
+  }
+
+  80% {
+    transform: translateX(10px);
+  }
+
+  100% {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+@keyframes moveInRight {
+  0% {
+    opacity: 0;
+    transform: translateX(500px);
+  }
+
+  80% {
+    transform: translateX(-10px);
+  }
+
+  100% {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}

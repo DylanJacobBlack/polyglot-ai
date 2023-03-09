@@ -1,0 +1,49 @@
+.lesson {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+}
+
+.button {
+  height: 100%;
+  font-size: xx-large;
+  border: none;
+  border-radius: 0%;
+  background-color: whitesmoke;
+  width: 10%;
+}
+
+.button:hover {
+  background-color: rgb(237, 236, 236);
+  cursor: pointer;
+  transition-duration: 150ms;
+}
+
+.button:focus {
+  outline: none;
+  box-shadow: none;
+}
+
+.page {
+  flex: 1 0 0;
+  height: 100%;
+  padding-top: 3rem;
+  background-color: white;
+  overflow: hidden;
+}
+
+.canvas {
+  display: none;
+}
+
+.linked-word {
+  cursor: pointer;
+  display: block;
+}
+
+.linked-word:hover {
+  fill: blue;
+  padding-bottom: .5;
+}

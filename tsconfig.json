@@ -28,6 +28,6 @@
     "**/*.tsx",
     "**/*.cjs",
     "**/*.mjs"
-  ],
+, "src/components/Lesson/LessonDisplay/SideBar.js"  ],
   "exclude": ["node_modules"]
 }
