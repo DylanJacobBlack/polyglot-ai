@@ -33,12 +33,18 @@
   animation-timing-function: ease-in;
 }
 
+.slogan3 {
+  animation-name: moveInRight;
+  animation-duration: 3s;
+  animation-timing-function: ease-in;
+}
+
 
 @media (min-width: 768px) {
   .slogan1 {
     text-transform: uppercase;
     letter-spacing: 0.3rem;
-    font-size: 4rem;
+    font-size: 2.5rem;
     animation-name: moveInLeft;
     animation-duration: .5s;
     animation-timing-function: ease-out;
@@ -47,7 +53,7 @@
 
   .slogan2 {
     text-transform: uppercase;
-    font-size: 3rem;
+    font-size: 2rem;
     animation-name: moveInRight;
     animation-duration: 1s;
     animation-timing-function: ease-in;

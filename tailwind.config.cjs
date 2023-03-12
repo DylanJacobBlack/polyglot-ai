@@ -1,13 +1,10 @@
 /** @type {import('tailwindcss').Config} */
 const config = {
-  content: [
-    "./src/**/*.{js,ts,jsx,tsx}",
-    "node_modules/flowbite-react/**/*.{js,jsx,ts,tsx}",
-  ],
+  content: ["./src/**/*.{js,ts,jsx,tsx}"],
   theme: {
     extend: {},
   },
-  plugins: [require("flowbite/plugin")],
+  plugins: [require("@headlessui/tailwindcss"), require("@tailwindcss/forms")],
 };
 
 module.exports = config;

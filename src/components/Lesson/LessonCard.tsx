@@ -1,8 +1,6 @@
 // import { Image, Transformation } from "cloudinary-react";
 import { CldImage } from "next-cloudinary";
-
 import Link from "next/link";
-import { Card } from "flowbite-react";
 
 interface LessonCardProps {
   id: string;
@@ -45,30 +43,26 @@ const LessonCard: React.FC<LessonCardProps> = ({
   console.log("heyo");
 
   return (
-    <div className="w-72">
-      <Card className="backdrop-hue-rotate-180">
+    <Link href={`/lessons/${id}`}>
+      <div className="flex flex-col overflow-hidden w-52 h-full pointer-events-auto rounded-lg bg-white text-[0.8125rem] leading-5 shadow-xl shadow-black/5 ring-1 ring-slate-700/10 hover:bg-slate-50">
         <CldImage
-          className="w-fill h-36 object-cover object-top"
+          className="h-36 object-cover object-top"
           width="600"
           height="600"
           src={imageId}
           alt="My Image"
         />
-        <div className="flex h-28 flex-col content-between gap-2">
-          <Link href={`/lessons/${id}`}>
-            <h3 className="font-bold tracking-tight text-gray-900 dark:text-white">
-              {title}
-            </h3>
-          </Link>
+        <div className="p-4 flex flex-col flex-grow border-t-2">
+          <div className="flex justify-between">
+            <div className="font-medium text-slate-900"> {title}</div>
+          </div>
           <div className="flex-grow"></div>
-          <div className="font-normal text-gray-700 dark:text-gray-400">
-            <h3 className="bg-gradient-to-r from-white to-blue-500 p-2 pr-5 text-right text-sm rounded-r-3xl">
-              {getLevel(level)}
-            </h3>
+          <div className="mt-6 font-medium text-slate-900">
+            {getLevel(level)}
           </div>
         </div>
-      </Card>
-    </div>
+      </div>
+    </Link>
   );
 };
 

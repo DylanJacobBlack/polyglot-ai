@@ -27,7 +27,9 @@
     "**/*.ts",
     "**/*.tsx",
     "**/*.cjs",
-    "**/*.mjs"
-, "src/components/Lesson/LessonDisplay/SideBar.js"  ],
+    "**/*.mjs",
+    "src/components/Lesson/LessonDisplay/SideBar.js",
+    "src/components/UploadWidget.jsx"
+  ],
   "exclude": ["node_modules"]
 }
