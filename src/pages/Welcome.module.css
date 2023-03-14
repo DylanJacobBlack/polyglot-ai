@@ -8,11 +8,8 @@
 }
 
 .text-box {
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
   color: rgb(0, 0, 0);
-  position: absolute;
+  position: relative;
 }
 
 .slogan1 {
@@ -37,6 +34,7 @@
   animation-name: moveInRight;
   animation-duration: 3s;
   animation-timing-function: ease-in;
+  position: absolute;
 }
 
 

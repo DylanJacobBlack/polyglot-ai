@@ -29,47 +29,41 @@ const LessonDisplay = ({ text, isLoading, status }: LessonDisplayInterface) => {
 
   const [lessonPages, setLessonPages] = useState<JSX.Element[]>([]);
   const [currentPage, setCurrentPage] = useState<number>(0);
-  // const [modalSwitch, setModalSwitch] = useState(false);
-  // const [topClick, setTopClick] = useState(false);
-  // const [translation, setTranslation] = useState({
-  //   phrase: "",
-  //   translation: "",
-  // });
-  // const [defIsLoading, setDefIsLoading] = useState(false);
+  const [modalSwitch, setModalSwitch] = useState(false);
+  const [topClick, setTopClick] = useState(false);
+  const [translation, setTranslation] = useState({
+    phrase: "",
+    translation: "",
+  });
+  const [defIsLoading, setDefIsLoading] = useState(false);
 
   const canvasRef = useRef() as MutableRefObject<HTMLCanvasElement>;
 
-  // const wordHandler = useCallback(
-  //   (event: MouseEvent) => {
-  //     setModalSwitch(true);
-  //     if (event.clientY < (window.innerHeight - 30) / 2) {
-  //       setTopClick(true);
-  //     } else {
-  //       setTopClick(false);
-  //     }
-  //     setDefIsLoading(true);
-  //     const phrase =  event.target.textContent
-  //       .trim()
-  //       .replace(/[,./?;':~&%$#@*^|]/g, "");
-  //     (async function () {
-  //       const response = await fetch(
-  //         "https://definiens-api.herokuapp.com/word",
-  //         {
-  //           method: "POST",
-  //           body: JSON.stringify({
-  //             text: phrase,
-  //             // language: langCtx.language,
-  //           }),
-  //           headers: { "Content-Type": "application/json" },
-  //         }
-  //       );
-  //       const data = await response.json();
-  //       setTranslation({ phrase: phrase, translation: data.translation });
-  //       setDefIsLoading(false);
-  //     })();
-  //   },
-  //   [langCtx.language]
-  // );
+  const wordHandler = useCallback((event: MouseEvent) => {
+    setModalSwitch(true);
+    if (event.clientY < (window.innerHeight - 30) / 2) {
+      setTopClick(true);
+    } else {
+      setTopClick(false);
+    }
+    setDefIsLoading(true);
+    if (!event.target) return;
+    const textContent = event.target.textContent as string;
+    const phrase = textContent.trim().replace(/[,./?;':~&%$#@*^|]/g, "");
+    void (async function () {
+      const response = await fetch("https://definiens-api.herokuapp.com/word", {
+        method: "POST",
+        body: JSON.stringify({
+          text: phrase,
+          // language: langCtx.language,
+        }),
+        headers: { "Content-Type": "application/json" },
+      });
+      const translation = (await response.json()) as string;
+      setTranslation({ phrase: phrase, translation });
+      setDefIsLoading(false);
+    })();
+  }, []);
 
   useEffect(() => {
     if (!lessonPages) return;
@@ -144,9 +138,7 @@ const LessonDisplay = ({ text, isLoading, status }: LessonDisplayInterface) => {
         const textToLines = (
           words: Array<string | number>,
           maxWidth: number,
-          maxLines: number,
-          x: number,
-          y: number
+          maxLines: number
         ) => {
           const lines = [];
 
@@ -192,7 +184,7 @@ const LessonDisplay = ({ text, isLoading, status }: LessonDisplayInterface) => {
               linkedLine.push(
                 <tspan
                   className={classes["linked-word"]}
-                  // onClick={wordHandler}
+                  onClick={(e) => wordHandler(e)}
                 >{`${linkedWord} `}</tspan>
               );
             });
@@ -241,14 +233,12 @@ const LessonDisplay = ({ text, isLoading, status }: LessonDisplayInterface) => {
         };
 
         for (let i = 0; wordCount !== textWords.length; i++) {
-          let lines = textToLines(
+          const lines = textToLines(
             getNextWords(wordCount),
             maxWidth,
-            maxLinesPerPage,
-            x,
-            y
+            maxLinesPerPage
           );
-          let linesOfLinks = linesToLinks(lines);
+          const linesOfLinks = linesToLinks(lines);
           pages.push(drawSvg(linesOfLinks, x, i));
         }
 
@@ -286,7 +276,7 @@ const LessonDisplay = ({ text, isLoading, status }: LessonDisplayInterface) => {
   return (
     <div className={classes.lesson}>
       <canvas ref={canvasRef} className={classes.canvas} />
-      {/* {modalSwitch && (
+      {modalSwitch && (
         <Definition
           isLoading={defIsLoading}
           topClick={topClick}
@@ -294,7 +284,7 @@ const LessonDisplay = ({ text, isLoading, status }: LessonDisplayInterface) => {
           translation={translation.translation}
           onHide={onHideHandler}
         />
-      )} */}
+      )}
       <button className={classes.button} onClick={() => pageBackHandler()}>
         <FontAwesomeIcon icon={faChevronLeft} />
       </button>
