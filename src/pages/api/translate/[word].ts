@@ -25,7 +25,9 @@ export default async function handler(
     };
 
     // Run request
+    console.log('say what')
     const [response] = await translationClient.translateText(request);
+    console.log('say butt')
 
     if (!response.translations) return null;
     for (const translation of response.translations) {

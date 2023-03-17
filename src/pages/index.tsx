@@ -13,19 +13,18 @@ const Home: NextPage = () => {
         <div className={classes["text-box"]}>
           <h2 className={classes.slogan1}>Learn languages</h2>
           <h2 className={classes.slogan2}>the easy way</h2>
-          <Image
-            className={`${classes.slogan3} lg:left-100 xl:left-100`}
-            alt="Polyglot AI"
-            width="400"
-            height="200"
-            src="/../public/images/polyglot.png"
-          />
+          <h1
+            // eslint-disable-next-line @typescript-eslint/restrict-template-expressions
+            className={`${classes.slogan3} lg:left-100 xl:left-100 mt-16 text-6xl text-sky-700`}
+          >
+            POLYGLOTAI
+          </h1>
         </div>
         <Image
           className="fixed top-1/4 left-1/2 opacity-20"
           alt="Polyglot AI"
-          width="500"
-          height="500"
+          width="600"
+          height="600"
           src="/../public/images/splotch.png"
         />
       </div>

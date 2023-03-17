@@ -1,4 +1,10 @@
-import React, { useRef, useEffect, useState, useCallback } from "react";
+import React, {
+  useRef,
+  useEffect,
+  useState,
+  useCallback,
+  Fragment,
+} from "react";
 import type { MutableRefObject } from "react";
 import { useResizeDetector } from "react-resize-detector";
 
@@ -8,6 +14,8 @@ import {
   faChevronLeft,
   faChevronRight,
 } from "@fortawesome/free-solid-svg-icons";
+import { Dialog, Transition } from "@headlessui/react";
+import Definition from "../Definition/Definition";
 // import Definition from "./Definition";
 // import LangContext from "../../store/lang-context";
 
@@ -29,7 +37,7 @@ const LessonDisplay = ({ text, isLoading, status }: LessonDisplayInterface) => {
 
   const [lessonPages, setLessonPages] = useState<JSX.Element[]>([]);
   const [currentPage, setCurrentPage] = useState<number>(0);
-  const [modalSwitch, setModalSwitch] = useState(false);
+  const [modalOpen, setModalOpen] = useState(false);
   const [topClick, setTopClick] = useState(false);
   const [translation, setTranslation] = useState({
     phrase: "",
@@ -40,7 +48,7 @@ const LessonDisplay = ({ text, isLoading, status }: LessonDisplayInterface) => {
   const canvasRef = useRef() as MutableRefObject<HTMLCanvasElement>;
 
   const wordHandler = useCallback((event: MouseEvent) => {
-    setModalSwitch(true);
+    setModalOpen(true);
     if (event.clientY < (window.innerHeight - 30) / 2) {
       setTopClick(true);
     } else {
@@ -50,15 +58,9 @@ const LessonDisplay = ({ text, isLoading, status }: LessonDisplayInterface) => {
     if (!event.target) return;
     const textContent = event.target.textContent as string;
     const phrase = textContent.trim().replace(/[,./?;':~&%$#@*^|]/g, "");
+    console.log(phrase);
     void (async function () {
-      const response = await fetch("https://definiens-api.herokuapp.com/word", {
-        method: "POST",
-        body: JSON.stringify({
-          text: phrase,
-          // language: langCtx.language,
-        }),
-        headers: { "Content-Type": "application/json" },
-      });
+      const response = await fetch(`/api/translate/${phrase}`);
       const translation = (await response.json()) as string;
       setTranslation({ phrase: phrase, translation });
       setDefIsLoading(false);
@@ -270,21 +272,29 @@ const LessonDisplay = ({ text, isLoading, status }: LessonDisplayInterface) => {
 
   const onHideHandler = () => {
     setTranslation({ phrase: "", translation: "" });
-    setModalSwitch(false);
+    setModalOpen(false);
   };
 
   return (
     <div className={classes.lesson}>
       <canvas ref={canvasRef} className={classes.canvas} />
-      {modalSwitch && (
-        <Definition
-          isLoading={defIsLoading}
-          topClick={topClick}
-          phrase={translation.phrase}
-          translation={translation.translation}
-          onHide={onHideHandler}
-        />
-      )}
+      <Transition.Root show={modalOpen} as={Fragment}>
+        <Dialog
+          as="div"
+          className="relative z-10"
+          // initialFocus={cancelButtonRef}
+          onClose={onHideHandler}
+        >
+          <Definition
+            isLoading={defIsLoading}
+            topClick={topClick}
+            phrase={translation.phrase}
+            translation={translation.translation}
+            onHideHandler={onHideHandler}
+            modalOpen={modalOpen}
+          />
+        </Dialog>
+      </Transition.Root>
       <button className={classes.button} onClick={() => pageBackHandler()}>
         <FontAwesomeIcon icon={faChevronLeft} />
       </button>

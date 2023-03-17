@@ -20,6 +20,8 @@
   animation-duration: 1s;
   animation-timing-function: ease-out;
   margin-bottom: 2rem;
+  z-index: 10;
+  position: relative;
 }
 
 .slogan2 {
@@ -28,6 +30,8 @@
   animation-name: moveInRight;
   animation-duration: 2s;
   animation-timing-function: ease-in;
+  z-index: 10;
+  position: relative;
 }
 
 .slogan3 {
@@ -35,6 +39,7 @@
   animation-duration: 3s;
   animation-timing-function: ease-in;
   position: absolute;
+  z-index: 10;
 }
 
 
