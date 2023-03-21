@@ -17,7 +17,7 @@ const Home: NextPage = () => {
             // eslint-disable-next-line @typescript-eslint/restrict-template-expressions
             className={`${classes.slogan3} lg:left-100 xl:left-100 mt-16 text-6xl text-sky-700`}
           >
-            POLYGLOTAI
+            POLYGLOT AI
           </h1>
         </div>
         <Image

@@ -10,16 +10,14 @@ const Lesson = () => {
   const { query } = router;
 
   const { data, isLoading, isError } = api.lesson.getById.useQuery(
-    query.id as string
+    query.id as string,
+    { enabled: !!query.id }
   );
 
   return (
     <div className={classes.lesson}>
       {!isLoading && !isError && data && (
-        <SideBar
-          title={data.title}
-          imageId={data.imageId}
-        />
+        <SideBar title={data.title} imageId={data.imageId} />
       )}
       {!isLoading && status === "" && data && (
         <LessonDisplay text={data.text} isLoading={isLoading} status={status} />

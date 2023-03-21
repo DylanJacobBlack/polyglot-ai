@@ -16,8 +16,6 @@ import {
 } from "@fortawesome/free-solid-svg-icons";
 import { Dialog, Transition } from "@headlessui/react";
 import Definition from "../Definition/Definition";
-// import Definition from "./Definition";
-// import LangContext from "../../store/lang-context";
 
 const pagePaddingLeft = 60;
 const pagePaddingRight = 60;
@@ -32,9 +30,6 @@ interface LessonDisplayInterface {
 }
 
 const LessonDisplay = ({ text, isLoading, status }: LessonDisplayInterface) => {
-  console.log(text);
-  // const langCtx = useContext(LangContext);
-
   const [lessonPages, setLessonPages] = useState<JSX.Element[]>([]);
   const [currentPage, setCurrentPage] = useState<number>(0);
   const [modalOpen, setModalOpen] = useState(false);
@@ -58,12 +53,14 @@ const LessonDisplay = ({ text, isLoading, status }: LessonDisplayInterface) => {
     if (!event.target) return;
     const textContent = event.target.textContent as string;
     const phrase = textContent.trim().replace(/[,./?;':~&%$#@*^|]/g, "");
-    console.log(phrase);
     void (async function () {
-      const response = await fetch(`/api/translate/${phrase}`);
-      const translation = (await response.json()) as string;
-      setTranslation({ phrase: phrase, translation });
-      setDefIsLoading(false);
+      try {
+        const response = await fetch(`/api/translate/${phrase}`);
+        console.log(response);
+        // const translation = (await response.json()) as string;
+        // setTranslation({ phrase: phrase, translation });
+        // setDefIsLoading(false);
+      } catch (e) {}
     })();
   }, []);
 
@@ -101,7 +98,6 @@ const LessonDisplay = ({ text, isLoading, status }: LessonDisplayInterface) => {
 
         const maxLinesPerPage = Math.round(columnHeight / lineHeight) - 2;
         const x = pagePaddingLeft;
-        const y = lineHeight;
 
         // # words that have been displayed
         //(used when ordering a new page of words)
@@ -177,16 +173,19 @@ const LessonDisplay = ({ text, isLoading, status }: LessonDisplayInterface) => {
         };
 
         const linesToLinks = (
-          lines: Array<{ index: number; text: string }>
+          lines: Array<{ index: number; text: string }>,
+          i: number
         ) => {
           const linesOfLinks: Array<Array<JSX.Element>> = [];
           let linkedLine: Array<JSX.Element> = [];
-          lines.forEach((line) => {
-            line.text.split(" ").forEach((linkedWord) => {
+          lines.forEach((line, lineIndex) => {
+            line.text.split(" ").forEach((linkedWord, wordIndex) => {
+              if (!linkedWord) return;
               linkedLine.push(
                 <tspan
                   className={classes["linked-word"]}
                   onClick={(e) => wordHandler(e)}
+                  key={`${i}${lineIndex}${wordIndex}${linkedWord}`}
                 >{`${linkedWord} `}</tspan>
               );
             });
@@ -240,7 +239,7 @@ const LessonDisplay = ({ text, isLoading, status }: LessonDisplayInterface) => {
             maxWidth,
             maxLinesPerPage
           );
-          const linesOfLinks = linesToLinks(lines);
+          const linesOfLinks = linesToLinks(lines, i);
           pages.push(drawSvg(linesOfLinks, x, i));
         }
 
@@ -257,7 +256,7 @@ const LessonDisplay = ({ text, isLoading, status }: LessonDisplayInterface) => {
         }
       }
     },
-    [isLoading, status, text, currentPage, lessonPages]
+    [isLoading, status, text, currentPage, lessonPages, wordHandler]
   );
 
   const { ref } = useResizeDetector({ onResize });
