@@ -9,8 +9,6 @@ const CreateLessonForm = () => {
     setImageId(info.public_id);
   };
 
-  console.log(imageId);
-
   return (
     <div className="flex place-content-center">
       <div className="mt-2 w-full p-8 md:col-span-2 md:mt-5 lg:mt-5 lg:w-1/2">

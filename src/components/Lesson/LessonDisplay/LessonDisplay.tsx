@@ -16,6 +16,7 @@ import {
 } from "@fortawesome/free-solid-svg-icons";
 import { Dialog, Transition } from "@headlessui/react";
 import Definition from "../Definition/Definition";
+import { useSession } from "next-auth/react";
 
 const pagePaddingLeft = 60;
 const pagePaddingRight = 60;
@@ -30,6 +31,7 @@ interface LessonDisplayInterface {
 }
 
 const LessonDisplay = ({ text, isLoading, status }: LessonDisplayInterface) => {
+  const { data: sessionData } = useSession();
   const [lessonPages, setLessonPages] = useState<JSX.Element[]>([]);
   const [currentPage, setCurrentPage] = useState<number>(0);
   const [modalOpen, setModalOpen] = useState(false);
@@ -42,31 +44,36 @@ const LessonDisplay = ({ text, isLoading, status }: LessonDisplayInterface) => {
 
   const canvasRef = useRef() as MutableRefObject<HTMLCanvasElement>;
 
-  const wordHandler = useCallback((event: MouseEvent) => {
-    setModalOpen(true);
-    if (event.clientY < (window.innerHeight - 30) / 2) {
-      setTopClick(true);
-    } else {
-      setTopClick(false);
-    }
-    setDefIsLoading(true);
-    if (!event.target) return;
-    const textContent = event.target.textContent as string;
-    const phrase = textContent.trim().replace(/[,./?;':~&%$#@*^|]/g, "");
-    void (async function () {
-      try {
-        const response = await fetch(`/api/translate/${phrase}`);
-        const translation = (await response.json()) as {
-          translatedText: string;
-        };
-        setTranslation({
-          phrase: phrase,
-          translation: translation.translatedText,
-        });
-        setDefIsLoading(false);
-      } catch (e) {}
-    })();
-  }, []);
+  const wordHandler = useCallback(
+    (event: MouseEvent) => {
+      setModalOpen(true);
+      if (event.clientY < (window.innerHeight - 30) / 2) {
+        setTopClick(true);
+      } else {
+        setTopClick(false);
+      }
+      setDefIsLoading(true);
+      if (!event.target) return;
+      const textContent = event.target.textContent as string;
+      const phrase = textContent.trim().replace(/[,./?;':~&%$#@*^|]/g, "");
+      void (async function () {
+        if (sessionData) {
+          try {
+            const response = await fetch(`/api/translate/${phrase}`);
+            const translation = (await response.json()) as {
+              translatedText: string;
+            };
+            setTranslation({
+              phrase: phrase,
+              translation: translation.translatedText,
+            });
+            setDefIsLoading(false);
+          } catch (e) {}
+        }
+      })();
+    },
+    [sessionData]
+  );
 
   useEffect(() => {
     if (!lessonPages) return;

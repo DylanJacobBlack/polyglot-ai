@@ -37,7 +37,6 @@ export default async function handler(
 
 
     if (response && response.translations[0]) {
-      console.log('check')
       res.status(200).json(response.translations[0]);
     }
   }

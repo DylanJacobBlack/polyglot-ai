@@ -22,7 +22,6 @@ const ImageUpload: React.FC<{
       },
       (error, result) => {
         if (!error && result.event === "success") {
-          console.log("done!", result);
           uploadImageHandler(result.info);
         }
       }

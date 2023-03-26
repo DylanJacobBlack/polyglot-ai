@@ -1,5 +1,6 @@
-import { Fragment,  } from "react";
+import { Fragment } from "react";
 import { Dialog, Transition } from "@headlessui/react";
+import { useSession } from "next-auth/react";
 
 const Definition: React.FC<{
   modalOpen: boolean;
@@ -10,6 +11,9 @@ const Definition: React.FC<{
   translation: string;
 }> = (props) => {
   // const cancelButtonRef = useRef(null);
+  const { data: sessionData } = useSession();
+
+  console.log("sessonsData", sessionData);
 
   return (
     <>
@@ -42,7 +46,8 @@ const Definition: React.FC<{
                   <div className="mt-3 w-full text-center sm:mt-0 sm:text-left">
                     <div className="mt-2 w-full">
                       <div className="w-full">
-                        {props.isLoading && (
+                        {!sessionData && <div>Must log in to add words.</div>}
+                        {props.isLoading && sessionData && (
                           <div className="flex items-center justify-center">
                             <div
                               className="inline-block h-8 w-8 animate-spin rounded-full border-4 border-solid border-current border-r-transparent align-[-0.125em] motion-reduce:animate-[spin_1.5s_linear_infinite]"
@@ -54,9 +59,11 @@ const Definition: React.FC<{
                             </div>
                           </div>
                         )}
-                        {!props.isLoading && <div>Phrase: {props.phrase}</div>}
-                        {!props.isLoading && (
-                          <div>Definition: {props.translation}</div>
+                        {!props.isLoading && sessionData && (
+                          <>
+                            <div>Phrase: {props.phrase}</div>
+                            <div>Definition: {props.translation}</div>
+                          </>
                         )}
                       </div>
                     </div>
@@ -69,6 +76,7 @@ const Definition: React.FC<{
                   className="inline-flex w-full justify-center rounded-md bg-emerald-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-emerald-500 sm:ml-3 sm:w-auto"
                   onClick={props.onHideHandler}
                   // onClick={addWordHandler.bind(this, langCtx.language)}
+                  disabled={!sessionData}
                 >
                   Add
                 </button>
