@@ -56,10 +56,14 @@ const LessonDisplay = ({ text, isLoading, status }: LessonDisplayInterface) => {
     void (async function () {
       try {
         const response = await fetch(`/api/translate/${phrase}`);
-        console.log(response);
-        // const translation = (await response.json()) as string;
-        // setTranslation({ phrase: phrase, translation });
-        // setDefIsLoading(false);
+        const translation = (await response.json()) as {
+          translatedText: string;
+        };
+        setTranslation({
+          phrase: phrase,
+          translation: translation.translatedText,
+        });
+        setDefIsLoading(false);
       } catch (e) {}
     })();
   }, []);
