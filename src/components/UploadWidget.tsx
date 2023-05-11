@@ -1,4 +1,23 @@
-export const openUploadWidget = (options, callback) => {
+/* eslint-disable @typescript-eslint/no-explicit-any */
+/* eslint-disable @typescript-eslint/no-unsafe-assignment */
+/* eslint-disable @typescript-eslint/no-unsafe-call */
+/* eslint-disable @typescript-eslint/no-unsafe-return */
+/* eslint-disable @typescript-eslint/no-unsafe-member-access */
+export const openUploadWidget = (
+  options: {
+    cloudName: string;
+    uploadPreset: string;
+    tags: string[];
+    maxImageWidth: number;
+    sources: string[];
+    cropping: boolean; //add a cropping step
+    croppingAspectRatio: number;
+    multiple: boolean; //restrict upload to a single file
+    //clientAllowedFormats: [".jpg"], //restrict uploading to image files only
+    maxImageFileSize: number;
+  },
+  callback: (error: any, result: any) => void
+) => {
   return window.cloudinary.openUploadWidget(options, callback);
 };
 
@@ -20,7 +39,7 @@ const ImageUpload: React.FC<{
         //clientAllowedFormats: [".jpg"], //restrict uploading to image files only
         maxImageFileSize: 2000000, //restrict file size to less than 2MB
       },
-      (error, result) => {
+      (error: any, result: { event: string; info: { public_id: string } }) => {
         if (!error && result.event === "success") {
           uploadImageHandler(result.info);
         }
@@ -32,7 +51,7 @@ const ImageUpload: React.FC<{
   return (
     <button
       className="mt-2 mb-4 flex h-48 w-48 items-center justify-center rounded-md border-2 border-dashed border-gray-300 px-6 pt-5 pb-6"
-      onClick={(e: MouseEvent) => uploadImageWidget(e)}
+      onClick={(e: unknown) => uploadImageWidget(e as MouseEvent)}
     >
       <svg
         className="mx-auto h-12 w-12 text-gray-400"

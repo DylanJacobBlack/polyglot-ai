@@ -1,3 +1,8 @@
+/* eslint-disable @typescript-eslint/no-var-requires */
+/* eslint-disable @typescript-eslint/no-unsafe-assignment */
+/* eslint-disable @typescript-eslint/no-floating-promises */
+/* eslint-disable @typescript-eslint/no-unsafe-member-access */
+/* eslint-disable @typescript-eslint/no-unsafe-call */
 const { PrismaClient } = require("@prisma/client");
 const prisma = new PrismaClient();
 
@@ -257,3 +262,5 @@ These people wanted to remain loyal to the King of England. During the 19th cent
 };
 
 load();
+
+export {};

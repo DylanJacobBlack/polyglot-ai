@@ -15,7 +15,7 @@ const NavBar = () => {
     { name: "Words", href: "/words", current: pathname == "/words" },
   ];
 
-  const classNames = (...classes) => {
+  const classNames = (...classes: string[]) => {
     return classes.filter(Boolean).join(" ");
   };
 
@@ -68,7 +68,7 @@ const NavBar = () => {
                   <div>
                     <Menu.Button className="flex rounded-full bg-gray-800 text-sm focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800">
                       <span className="sr-only">Open user menu</span>
-                      <div className="h-8 w-8 rounded-full flex justify-center items-center text-white">
+                      <div className="flex h-8 w-8 items-center justify-center rounded-full text-white">
                         <svg
                           xmlns="http://www.w3.org/2000/svg"
                           fill="none"

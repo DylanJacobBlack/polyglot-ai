@@ -45,7 +45,7 @@ const LessonDisplay = ({ text, isLoading, status }: LessonDisplayInterface) => {
   const canvasRef = useRef() as MutableRefObject<HTMLCanvasElement>;
 
   const wordHandler = useCallback(
-    (event: MouseEvent) => {
+    (event: React.MouseEvent<SVGTSpanElement, MouseEvent>) => {
       setModalOpen(true);
       if (event.clientY < (window.innerHeight - 30) / 2) {
         setTopClick(true);
@@ -54,10 +54,11 @@ const LessonDisplay = ({ text, isLoading, status }: LessonDisplayInterface) => {
       }
       setDefIsLoading(true);
       if (!event.target) return;
-      const textContent = event.target.textContent as string;
-      const phrase = textContent.trim().replace(/[,./?;':~&%$#@*^|]/g, "");
+      const eventTarget = event.target as HTMLElement;
+      const textContent = eventTarget.textContent;
+      const phrase = textContent?.trim().replace(/[,./?;':~&%$#@*^|]/g, "");
       void (async function () {
-        if (sessionData) {
+        if (sessionData && phrase) {
           try {
             const response = await fetch(`/api/translate/${phrase}`);
             const translation = (await response.json()) as {
@@ -114,7 +115,7 @@ const LessonDisplay = ({ text, isLoading, status }: LessonDisplayInterface) => {
         //(used when ordering a new page of words)
         let wordCount = 0;
 
-        const canvas: any = canvasRef.current;
+        const canvas: unknown = canvasRef.current;
         const context =
           canvas instanceof HTMLCanvasElement ? canvas.getContext("2d") : null;
         if (!context) return;
@@ -172,12 +173,14 @@ const LessonDisplay = ({ text, isLoading, status }: LessonDisplayInterface) => {
             if (words[i] === 0) {
               return { index: i, text: line + "\u00A0" };
             }
-            const testWidth = context.measureText(`${line} ${words[i]}`).width;
+            const testWidth = context.measureText(
+              `${line} ${words[i] as string}`
+            ).width;
             // When tested width is greater than the maxwidth, return an index of one less
             if (testWidth > maxWidth) {
               return { index: i - 1, text: line };
             }
-            line += `${space} ${words[i]}`;
+            line += `${space} ${words[i] as string}`;
             space = " ";
           }
           return { index: words.length - 1, text: line };
@@ -206,12 +209,12 @@ const LessonDisplay = ({ text, isLoading, status }: LessonDisplayInterface) => {
           return linesOfLinks;
         };
 
-        const drawSvg = (linesOfLinks: JSX.Element[][], x: any, i: number) => {
+        const drawSvg = (linesOfLinks: JSX.Element[][], x: number, i: number) => {
           const tspans: Array<JSX.Element> = [];
           linesOfLinks.forEach((line, index) => {
             const tspan = (
               <tspan
-                key={`page${index}-line${line}`}
+                key={`page${index}-line${x}`}
                 x={x}
                 dy={`${lineHeight}px`}
               >
