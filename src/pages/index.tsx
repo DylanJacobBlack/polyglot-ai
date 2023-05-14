@@ -2,7 +2,7 @@ import Head from "next/head";
 import classes from "./Welcome.module.css";
 import type { NextPage } from "next";
 import Image from "next/image";
-import splotch from "/../public/static/images/splotch.png";
+import splotch from "../../public/static/images/splotch.png"
 
 const Home: NextPage = () => {
   return (
