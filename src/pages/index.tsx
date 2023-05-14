@@ -2,6 +2,7 @@ import Head from "next/head";
 import classes from "./Welcome.module.css";
 import type { NextPage } from "next";
 import Image from "next/image";
+import splotch from "/../public/static/images/splotch.png";
 
 const Home: NextPage = () => {
   return (
@@ -25,7 +26,7 @@ const Home: NextPage = () => {
           alt="Polyglot AI"
           width="600"
           height="600"
-          src="/../public/static/images/splotch.png"
+          src={splotch}
         />
       </div>
     </>
