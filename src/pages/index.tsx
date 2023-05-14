@@ -25,7 +25,7 @@ const Home: NextPage = () => {
           alt="Polyglot AI"
           width="600"
           height="600"
-          src="/../public/images/splotch.png"
+          src="/../public/static/images/splotch.png"
         />
       </div>
     </>
