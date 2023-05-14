@@ -1,6 +1,6 @@
 declare global {
   interface Window {
-    cloudinary: unknown;
+    cloudinary: any;
   }
 }
 
