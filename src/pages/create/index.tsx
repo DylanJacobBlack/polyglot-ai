@@ -10,7 +10,7 @@ import { api } from "~/utils/api";
 const CreateLessonForm = () => {
   const [imageId, setImageId] = useState<string | null>(null);
   const [selectedDifficulty, setSelected] = useState<Option | undefined>({
-    id: "0",
+    id: 0,
     name: "Newbie",
   });
   const [errors, setErrors] = useState<ErrorItem[]>([]);
