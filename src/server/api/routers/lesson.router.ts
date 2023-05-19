@@ -18,4 +18,24 @@ export const lessonRouter = createTRPCRouter({
       },
     });
   }),
+  createNewLesson: publicProcedure
+    .input(
+      z.object({
+        title: z.string(),
+        text: z.string(),
+        level: z.number(),
+        imageId: z.string(),
+      })
+    )
+    .mutation(async ({ ctx, input }) => {
+      if (!input) return;
+      await ctx.prisma.lesson.create({
+        data: {
+          title: input.title,
+          text: input.text,
+          level: input.level,
+          imageId: input.imageId,
+        },
+      });
+    }),
 });
