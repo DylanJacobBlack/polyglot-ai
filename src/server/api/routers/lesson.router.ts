@@ -38,4 +38,14 @@ export const lessonRouter = createTRPCRouter({
         },
       });
     }),
+  deleteLesson: publicProcedure
+    .input(z.string())
+    .mutation(async ({ ctx, input }) => {
+      if (!input) return;
+      await ctx.prisma.lesson.delete({
+        where: {
+          id: input,
+        },
+      });
+    }),
 });

@@ -1,4 +1,4 @@
-import { Fragment, useEffect } from "react";
+import { Fragment } from "react";
 import type { Dispatch, SetStateAction } from "react";
 import type { Option } from "types";
 import { Listbox, Transition } from "@headlessui/react";

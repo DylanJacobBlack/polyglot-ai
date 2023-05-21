@@ -5,7 +5,7 @@ import React, {
   useCallback,
   Fragment,
 } from "react";
-import type { MutableRefObject } from "react";
+import type { Dispatch, MutableRefObject, SetStateAction } from "react";
 import { useResizeDetector } from "react-resize-detector";
 
 import classes from "./LessonDisplay.module.css";
@@ -17,6 +17,7 @@ import {
 import { Dialog, Transition } from "@headlessui/react";
 import Definition from "../Definition/Definition";
 import { useSession } from "next-auth/react";
+import ConfirmationModal from "~/components/ConfirmationModal/ConfirmationModal";
 
 const pagePaddingLeft = 60;
 const pagePaddingRight = 60;
@@ -27,10 +28,16 @@ const lineHeight = 50;
 interface LessonDisplayInterface {
   text: string;
   isLoading: boolean;
-  status: string;
+  callback: (() => void) | boolean;
+  setCallback: Dispatch<SetStateAction<(() => void) | boolean>>;
 }
 
-const LessonDisplay = ({ text, isLoading, status }: LessonDisplayInterface) => {
+const LessonDisplay = ({
+  text,
+  isLoading,
+  callback,
+  setCallback,
+}: LessonDisplayInterface) => {
   const { data: sessionData } = useSession();
   const [lessonPages, setLessonPages] = useState<JSX.Element[]>([]);
   const [currentPage, setCurrentPage] = useState<number>(0);
@@ -96,7 +103,7 @@ const LessonDisplay = ({ text, isLoading, status }: LessonDisplayInterface) => {
 
   const onResize = useCallback(
     (width?: number, height?: number) => {
-      if (isLoading === false && status === "" && width && height && text) {
+      if (isLoading === false && width && height && text) {
         const pages = [];
 
         let maxWidth = 300;
@@ -209,15 +216,15 @@ const LessonDisplay = ({ text, isLoading, status }: LessonDisplayInterface) => {
           return linesOfLinks;
         };
 
-        const drawSvg = (linesOfLinks: JSX.Element[][], x: number, i: number) => {
+        const drawSvg = (
+          linesOfLinks: JSX.Element[][],
+          x: number,
+          i: number
+        ) => {
           const tspans: Array<JSX.Element> = [];
           linesOfLinks.forEach((line, index) => {
             const tspan = (
-              <tspan
-                key={`page${index}-line${x}`}
-                x={x}
-                dy={`${lineHeight}px`}
-              >
+              <tspan key={`page${index}-line${x}`} x={x} dy={`${lineHeight}px`}>
                 {line.map((linkedWord) => linkedWord)}
               </tspan>
             );
@@ -270,7 +277,7 @@ const LessonDisplay = ({ text, isLoading, status }: LessonDisplayInterface) => {
         }
       }
     },
-    [isLoading, status, text, currentPage, lessonPages, wordHandler]
+    [isLoading, currentPage, text, lessonPages, wordHandler]
   );
 
   const { ref } = useResizeDetector({ onResize });
@@ -312,14 +319,20 @@ const LessonDisplay = ({ text, isLoading, status }: LessonDisplayInterface) => {
         <FontAwesomeIcon icon={faChevronLeft} />
       </button>
       <div className={classes.page} ref={ref}>
-        {!isLoading &&
-          status === "" &&
-          lessonPages !== null &&
-          lessonPages[currentPage]}
+        {!isLoading && lessonPages !== null && lessonPages[currentPage]}
       </div>
       <button className={classes.button} onClick={() => pageForwardHandler()}>
         <FontAwesomeIcon icon={faChevronRight} />
       </button>
+      {callback && (
+        <ConfirmationModal
+          callback={callback}
+          setCallback={setCallback}
+          title="Delete Lesson"
+          content="Are you sure you want to delete the lesson? This action cannot be undone."
+          buttonText="Delete Lesson"
+        />
+      )}
     </div>
   );
 };

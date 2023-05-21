@@ -15,6 +15,7 @@ const LessonCard: React.FC<LessonCardProps> = ({
   level,
   imageId,
 }) => {
+  console.log(id, title, level, imageId)
   const getLevel = (level: number) => {
     if (level === 1) {
       return (

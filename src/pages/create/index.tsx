@@ -10,7 +10,7 @@ import { api } from "~/utils/api";
 const CreateLessonForm = () => {
   const [imageId, setImageId] = useState<string | null>(null);
   const [selectedDifficulty, setSelected] = useState<Option | undefined>({
-    id: 0,
+    id: 1,
     name: "Newbie",
   });
   const [errors, setErrors] = useState<ErrorItem[]>([]);
@@ -89,12 +89,12 @@ const CreateLessonForm = () => {
               <Select
                 label="Difficulty level"
                 options={[
-                  { id: 0, name: "Newbie" },
-                  { id: 1, name: "Beginner" },
-                  { id: 2, name: "Intermediate" },
-                  { id: 3, name: "Proficient" },
-                  { id: 4, name: "Advanced" },
-                  { id: 5, name: "Fluent" },
+                  { id: 1, name: "Newbie" },
+                  { id: 2, name: "Beginner" },
+                  { id: 3, name: "Intermediate" },
+                  { id: 4, name: "Proficient" },
+                  { id: 5, name: "Advanced" },
+                  { id: 6, name: "Fluent" },
                 ]}
                 selected={selectedDifficulty}
                 setSelected={setSelected}
