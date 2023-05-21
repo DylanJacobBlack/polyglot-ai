@@ -1,5 +1,4 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { AppState } from "../store/store";
 import { HYDRATE } from "next-redux-wrapper";
 
 // Type for our state
@@ -24,14 +23,14 @@ export const lessonsSlice = createSlice({
   },
 
   // Special reducer for hydrating the state. Special case for next-redux-wrapper
-  // extraReducers: {
-  //   [HYDRATE]: (state, action) => {
-  //     return {
-  //       ...state,
-  //       ...action.payload.auth,
-  //     };
-  //   },
-  // },
+  extraReducers: {
+    [HYDRATE]: (state, action) => {
+      return {
+        ...state,
+        // ...action.payload.auth,
+      };
+    },
+  },
 });
 
 // export const { setAuthState } = authSlice.actions;
